@@ -10,6 +10,6 @@ public class TestController {
     @GetMapping("/test-token")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String string() {
-        return "Hello Manger";
+        return "Hello Admin";
     }
 }
