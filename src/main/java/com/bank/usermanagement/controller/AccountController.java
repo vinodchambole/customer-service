@@ -26,6 +26,12 @@ public class AccountController {
         return accountService.getAllAccounts();
     }
 
+    @GetMapping("/email")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Account> getAllAccountsByEmail(@RequestParam String email) {
+        return accountService.getAllAccountsByEmail(email);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
         Optional<Account> accountOptional = accountService.getAccountById(id);

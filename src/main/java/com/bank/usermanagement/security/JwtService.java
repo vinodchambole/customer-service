@@ -35,13 +35,6 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    private static HashMap<String, Object> getClaims(UserDetails userDetails) {
-        HashMap<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("role", userDetails.getAuthorities().stream().findFirst().get().getAuthority());
-        extraClaims.put("userName", userDetails.getUsername());
-        return extraClaims;
-    }
-
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
@@ -56,16 +49,12 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-
-
             return Jwts
                     .parserBuilder()
                     .setSigningKey(getSignInKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-
-
     }
 
     private Key getSignInKey() {

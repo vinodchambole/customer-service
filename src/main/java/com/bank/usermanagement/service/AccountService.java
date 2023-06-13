@@ -32,6 +32,10 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
+    public List<Account> getAllAccountsByEmail(String email) {
+        return accountRepository.findAllByEmail(email);
+    }
+
     public Optional<Account> getAccountById(Long id) {
         return accountRepository.findById(id);
     }
@@ -49,6 +53,7 @@ public class AccountService {
         Customer customer = new Customer();
         customer.setEmail(accountCreationRequest.getEmail());
         customer.setName(userByEmail.getFirstname() + " " + userByEmail.getLastname());
+        customer.setEmail(accountCreationRequest.getEmail());
 
         String transactionPassword = generateRandomPassword();
 
@@ -79,6 +84,7 @@ public class AccountService {
         a.setAccountNumber(accountCreationRequest.getAccountNumber());
         a.setCreatedAt(LocalDateTime.now());
         a.setUpdatedAt(LocalDateTime.now());
+        a.setEmail(accountCreationRequest.getEmail());
         return a;
     }
 

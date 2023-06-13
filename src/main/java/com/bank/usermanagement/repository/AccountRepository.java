@@ -1,11 +1,7 @@
 package com.bank.usermanagement.repository;
 
 import com.bank.usermanagement.entity.Account;
-import com.bank.usermanagement.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +16,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findByAccountNumber(String accountNumber);
 
-    @Modifying
-    @Query(value = "UPDATE Account a SET a.transactions = :transactions WHERE a.id = :id")
-    void saveTransaction(@Param("id") Long id, @Param("transactions") List<Transaction> transactions);
+    List<Account> findAllByEmail(String email);
+
 }
