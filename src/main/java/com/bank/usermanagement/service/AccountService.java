@@ -10,7 +10,6 @@ import com.bank.usermanagement.security.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +76,7 @@ public class AccountService {
 
     private Account populateAccount(AccountCreationRequest accountCreationRequest, Customer c) {
         Account a = new Account();
-        a.setBalance(BigDecimal.valueOf(0));
+        a.setBalance(0);
         a.setAccountNumber(accountCreationRequest.getAccountNumber());
         a.setCustomer(c);
         a.setAccountType(accountCreationRequest.getAccountType());
@@ -85,6 +84,7 @@ public class AccountService {
         a.setCreatedAt(LocalDateTime.now());
         a.setUpdatedAt(LocalDateTime.now());
         a.setEmail(accountCreationRequest.getEmail());
+        a.setBalance(accountCreationRequest.getAmount());
         return a;
     }
 

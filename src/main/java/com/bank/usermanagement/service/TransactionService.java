@@ -41,9 +41,9 @@ public class TransactionService {
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
         if (user.getRole().equals(Role.ADMIN) || (Objects.equals(account.getCustomer().getEmail(), user.getUsername())) && validateTransactionPassword(transactionRequest.getAccountId(), user, transactionRequest.getTransactionPassword())) {
 
-            BigDecimal amount = transactionRequest.getAmount();
-            BigDecimal newBalance = account.getBalance().add(amount);
-            account.setBalance(newBalance);
+            BigDecimal amount = BigDecimal.valueOf(transactionRequest.getAmount());
+            BigDecimal newBalance = BigDecimal.valueOf(account.getBalance()).add(amount);
+            account.setBalance(newBalance.doubleValue());
 
             Transaction transaction = Transaction.builder()
                     .account(account)
@@ -64,12 +64,12 @@ public class TransactionService {
 
         if (user.getRole().equals(Role.ADMIN) || (Objects.equals(account.getCustomer().getEmail(), user.getUsername())) && validateTransactionPassword(transactionRequest.getAccountId(), user, transactionRequest.getTransactionPassword())) {
 
-            BigDecimal amount = transactionRequest.getAmount();
-            BigDecimal newBalance = account.getBalance().subtract(amount);
+            double amount = transactionRequest.getAmount();
+            BigDecimal newBalance = BigDecimal.valueOf(account.getBalance()).subtract(BigDecimal.valueOf(amount));
             if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
                 throw new InsufficientBalanceException("Insufficient balance");
             }
-            account.setBalance(newBalance);
+            account.setBalance(newBalance.doubleValue());
             Transaction transaction = Transaction.builder()
                     .createdAt(LocalDateTime.now())
                     .transactionType(TransactionType.WITHDRAW)
@@ -105,19 +105,19 @@ public class TransactionService {
 
             try {
 
-                BigDecimal amount = transferRequest.getAmount();
-                BigDecimal fromAccountBalance = fromAccount.getBalance();
+                BigDecimal amount = BigDecimal.valueOf(transferRequest.getAmount());
+                BigDecimal fromAccountBalance = BigDecimal.valueOf(fromAccount.getBalance());
                 if (fromAccountBalance.compareTo(amount) < 0) {
 
                     throw new InsufficientBalanceException("Insufficient balance in the from account");
                 }
 
                 BigDecimal newFromAccountBalance = fromAccountBalance.subtract(amount);
-                fromAccount.setBalance(newFromAccountBalance);
+                fromAccount.setBalance(newFromAccountBalance.doubleValue());
 
-                BigDecimal toAccountBalance = toAccount.getBalance();
+                BigDecimal toAccountBalance = BigDecimal.valueOf(toAccount.getBalance());
                 BigDecimal newToAccountBalance = toAccountBalance.add(amount);
-                toAccount.setBalance(newToAccountBalance);
+                toAccount.setBalance(newToAccountBalance.doubleValue());
 
 
                 status = TransactionStatus.SUCCESS;
