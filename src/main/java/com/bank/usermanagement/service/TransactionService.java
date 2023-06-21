@@ -47,6 +47,7 @@ public class TransactionService {
 
             Transaction transaction = Transaction.builder()
                     .account(account)
+                    .amount(transactionRequest.getAmount())
                     .createdAt(LocalDateTime.now())
                     .transactionType(TransactionType.ADD)
                     .actor(user.getFirstname() + "-" + user.getRole())
